@@ -1,0 +1,251 @@
+body{
+  margin:0;
+  overflow:hidden;
+  font-family:Arial, sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  background:linear-gradient(-45deg,#ffd6ec,#ffe9f5,#ffd1e6,#fff0f7);
+  background-size:400% 400%;
+  animation:gradientMove 12s ease infinite;
+  font-family:'Poppins', sans-serif;
+}
+
+@keyframes gradientMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* ENVELOPE */
+.envelope-container{cursor:pointer;}
+.envelope{
+  width:200px;
+  height:120px;
+  background:#ff4fa3;
+  position:relative;
+  border-radius:5px;
+  transition:1s;
+}
+.flap{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:#ff2f90;
+  clip-path:polygon(0 0,100% 0,50% 60%);
+  transform-origin:top;
+  transition:1s ease;
+}
+
+.envelope.open .flap{
+  transform:rotateX(-180deg);
+}
+
+
+/* LOVE BURST */
+.burst-love{
+  position:fixed;
+  animation:explode 1.5s ease-out forwards;
+  pointer-events:none;
+}
+@keyframes explode{
+  from{transform:scale(0.5);opacity:1;}
+  to{transform:translateY(-100px) scale(1.5);opacity:0;}
+}
+
+/* MEMORY */
+.memory-container{
+  display:none;
+  flex-direction:column;
+  align-items:center;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,80px);
+  gap:10px;
+  margin-top:20px;
+}
+.card{
+  width:80px;
+  height:80px;
+  background:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:24px;
+  cursor:pointer;
+  border-radius:10px;
+  transition:1.3s;
+}
+.card.flip{background:#ffe4f0;}
+.card.matched{background:#ffc1e3;}
+
+/* END */
+.end-message{
+  display:none;
+  position:absolute;
+  font-size:40px;
+  color:#ff4fa3;
+  animation:fadeZoom 1.5s ease forwards;
+}
+@keyframes fadeZoom{
+  from{opacity:0;transform:scale(0.8);}
+  to{opacity:1;transform:scale(1.1);}
+}
+
+/* LETTER */
+.letter-page{
+  display:none;
+  position:absolute;
+  width:100%;
+  height:100%;
+  justify-content:center;
+  align-items:center;
+}
+.paper{
+  width:350px;
+  padding:40px;
+  background:white;
+  border-radius:10px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.2);
+  text-align:center;
+  animation:fadeZoom 1.5s ease forwards;
+}
+#nextBtn{
+  margin-top:20px;
+  padding:10px 25px;
+  border:none;
+  border-radius:25px;
+  background:#ff4fa3;
+  color:white;
+  cursor:pointer;
+}
+
+/* ================= VALENTINE PAGE ================= */
+.valentine-page {
+  display: none; /* nanti diubah jadi flex via JS */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center;
+
+  overflow: visible;
+}
+
+/* Hapus semua kemungkinan shadow/kotak */
+.valentine-page * {
+  box-shadow: none !important;
+  background-color: transparent;
+}
+
+/* ================= TITLE ================= */
+.valentine-page h1 {
+  font-size: 48px;
+  color: #000000;
+  margin-bottom: 20px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* ================= SNOOPY GIF ================= */
+.snoopy-gif {
+  width: 160px;
+  margin: 20px 0;
+  display: block;
+}
+
+.valentine-box.tatum{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.tatum-gif {
+  width: 160px;
+  margin: 20px auto;
+  display: block;
+}
+
+/* ================= BUTTON GROUP ================= */
+.valentine-box h2{
+  font-size:32px;
+  color:#000000;
+  margin-bottom:30px;
+  padding:60px 80px;
+}
+
+.buttons{
+  display:flex;
+  gap:30px;
+  justify-content:center;
+}
+
+#yesBtn, #noBtn{
+  padding:15px 35px;
+  font-size:20px;
+  border:none;
+  border-radius:50px;
+  cursor:pointer;
+  transition:0.3s ease;
+  font-weight:600;
+}
+
+#yesBtn{
+  background:linear-gradient(135deg,#4CAF50,#2ecc71);
+  color:white;
+  box-shadow:0 8px 20px rgba(46,204,113,0.4);
+  transform-origin: center;
+}
+
+#yesBtn:hover{
+  transform:scale(1.1);
+}
+
+#noBtn{
+  background:linear-gradient(135deg,#ff4d6d,#ff758f);
+  color:white;
+  box-shadow:0 8px 20px rgba(255,77,109,0.4);
+}
+
+#noBtn:hover{
+  transform:scale(1.1);
+}
+
+#resetBtn{
+  position:relative;
+  overflow:hidden;
+  padding:12px 30px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(135deg,#ff4fa3,#ff80bf);
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+  transition:0.3s ease;
+  box-shadow:0 8px 20px rgba(255,105,180,0.4);
+}
+
+#resetBtn:hover{
+  transform:scale(1.08);
+}
+
+/* RIPPLE ELEMENT */
+#resetBtn span{
+  position:absolute;
+  border-radius:50%;
+  transform:scale(0);
+  animation:ripple 0.6s linear;
+  background:rgba(255,255,255,0.6);
+  pointer-events:none;
+}
+
+@keyframes ripple{
+  to{
+    transform:scale(4);
+    opacity:0;
+  }
+}

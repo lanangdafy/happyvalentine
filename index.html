@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Valentine Game</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<audio id="openSound" src="open.mp3"></audio>
+<audio id="flipSound" src="flip.mp3"></audio>
+<audio id="winSound" src="win.mp3"></audio>
+
+<!-- ENVELOPE -->
+<div class="envelope-container" id="envelopeContainer">
+  <div class="envelope" id="envelope">
+    <div class="flap"></div>
+  </div>
+</div>
+
+<!-- MEMORY -->
+<div class="memory-container" id="memoryGame">
+  <h2>Memory Game 💖</h2>
+  <div class="grid" id="grid"></div>
+</div>
+
+<!-- END -->
+<div class="end-message" id="endMessage">
+  ih kok bisa sih
+</div>
+
+<!-- LETTER -->
+<div class="letter-page" id="letterPage">
+  <div class="paper">
+    <h2>buat u nih</h2>
+    <p>
+      <br>karna u udah nyelesain gamenya<br>
+      coba klik next
+    </p>
+    <button id="nextBtn">Next ➜</button>
+  </div>
+</div>
+
+<!-- VALENTINE -->
+<div class="valentine-page" id="valentinePage">
+  <div class="valentine-box">
+    <h2>Will u be my valentine?</h2>
+    <img src="snoopy.gif"img/>
+    <div class="buttons">
+      <button id="yesBtn">YES 💚</button>
+      <button id="noBtn">NO ❤️</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+const openSound=document.getElementById("openSound");
+const flipSound=document.getElementById("flipSound");
+const winSound=document.getElementById("winSound");
+
+const envelopeContainer=document.getElementById("envelopeContainer");
+const envelope=document.getElementById("envelope");
+const memoryGame=document.getElementById("memoryGame");
+const letterPage=document.getElementById("letterPage");
+const valentinePage=document.getElementById("valentinePage");
+const endMessage=document.getElementById("endMessage");
+const nextBtn=document.getElementById("nextBtn");
+
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+
+function loveBurst(){
+  for(let i=0;i<20;i++){
+    const love=document.createElement("div");
+    love.classList.add("burst-love");
+    love.innerHTML="💗";
+    love.style.left=Math.random()*100+"vw";
+    love.style.top=Math.random()*100+"vh";
+    love.style.fontSize=(20+Math.random()*30)+"px";
+    document.body.appendChild(love);
+    setTimeout(()=>love.remove(),1500);
+  }
+}
+
+/* ENVELOPE */
+envelopeContainer.addEventListener("click",()=>{
+
+  openSound.currentTime =0;
+  openSound.play();
+
+  setTimeout(()=>{
+    openSound.currentTime =0;
+    openSound.pause();
+  },1000);
+
+  envelope.classList.add("open");
+  loveBurst();
+
+  setTimeout(()=>{
+    envelopeContainer.style.display="none";
+    memoryGame.style.display="flex";
+  },1200);
+});
+
+/* MEMORY GAME */
+const emojis=["💖","🌸","✨","💌"];
+let cards=[...emojis,...emojis]; // 8 kartu fix
+cards.sort(()=>0.5-Math.random());
+
+const grid=document.getElementById("grid");
+let first=null;
+let lock=false;
+let match=0;
+
+cards.forEach(symbol=>{
+  const card=document.createElement("div");
+  card.classList.add("card");
+  card.innerHTML="?";
+  card.dataset.symbol=symbol;
+  grid.appendChild(card);
+
+  card.addEventListener("click",()=>{
+
+    if(lock||card.classList.contains("matched"))return;
+
+    card.innerHTML=symbol;
+
+    if(!first){
+      first=card;
+    }else{
+      if(first.dataset.symbol===symbol){
+
+        card.classList.add("matched");
+        first.classList.add("matched");
+        match++;
+        first=null;
+
+        if(match===4){
+          winSound.play();
+
+          setTimeout(()=>{
+            memoryGame.style.display="none";
+            endMessage.style.display="block";
+
+            setTimeout(()=>{
+              endMessage.style.display="none";
+              letterPage.style.display="flex";
+            },2000);
+
+          },800);
+        }
+
+      }else{
+        lock=true;
+        setTimeout(()=>{
+          card.innerHTML="?";
+          first.innerHTML="?";
+          first=null;
+          lock=false;
+        },800);
+      }
+    }
+
+  });
+
+});
+
+/* NEXT BUTTON */
+nextBtn.addEventListener("click",()=>{
+  letterPage.style.display="none";
+  valentinePage.style.display="flex";
+});
+
+/* YES / NO */
+let scale=1;
+
+noBtn.addEventListener("click",()=>{
+  scale+=0.2;
+  yesBtn.style.transform=`scale(${scale})`;
+});
+
+yesBtn.addEventListener("click",()=>{
+  valentinePage.innerHTML=`
+    <div class="valentine-box-tatum">
+      <h2>YAYYY, I can't wait! 💖</h2>
+      <img src="tatum.gif" class="tatum-gif">
+      <button id="resetBtn">Reset</button>
+    </div>
+  `;
+  loveBurst();
+
+  document.getElementById("resetBtn").addEventListener("click", function(e){
+
+  const circle = document.createElement("span");
+  const diameter = Math.max(this.clientWidth, this.clientHeight);
+  const radius = diameter / 2;
+
+  circle.style.width = circle.style.height = `${diameter}px`;
+  circle.style.left = `${e.clientX - this.offsetLeft - radius}px`;
+  circle.style.top = `${e.clientY - this.offsetTop - radius}px`;
+
+  this.appendChild(circle);
+
+  setTimeout(()=>circle.remove(),600);
+
+  setTimeout(()=>{
+    location.reload();
+  },300);
+});
+
+});
+
+
+</script>
+
+</body>
+</html>
